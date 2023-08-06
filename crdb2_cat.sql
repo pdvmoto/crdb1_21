@@ -1,5 +1,7 @@
 -- in case we need m
 
+echo Pre-Size the REDO and Datafiles if you can.. slightly faster..
+
 @accpws
 
 set echo on
@@ -32,5 +34,4 @@ set echo on
 
 spool /opt/oracle/admin/free/scripts/sqlPlusHelp.log append
 host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/oracle/admin/free/scripts -v  -b hlpbld -u SYSTEM/&&systemPassword  -U "SYS"/"&&sysPassword" -a 1  $ORACLE_HOME/sqlplus/admin/help/hlpbld.sql 1helpus.sql;
-spool off
 spool off
