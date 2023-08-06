@@ -1,10 +1,18 @@
 
-# install basic components before creating more pdbs
+/* 
+crdb3_comp.sql : install basic components before creating more pdbs
+
+notes:
+ - not happy with the long commandlines, 
+   try find simpler solution, use $VARS or call script?
+ - despite utlrp some invalids remain, seems due to pre- or beta- or dev-release  
+
+*/ 
 
 @accpws
 
 
-# JServer
+prompt JServer
 
 SET VERIFY OFF
 
@@ -12,8 +20,8 @@ connect "SYS"/"&&sysPassword" as SYSDBA
 set echo on
 spool /opt/oracle/admin/free/scripts/JServer.log append
 
-# consider script to run catcon.pl.. or ..
-# host $OPERL $OCATCON -n 1 -l $OLOG -v -b initjvm -c 'PDB$SEED CDB$ROOT'  
+-- consider script to run catcon.pl.. or ..
+-- host $OPERL $OCATCON -n 1 -l $OLOG -v -b initjvm -c 'PDB$SEED CDB$ROOT'  
 
 host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/oracle/admin/free/scripts -v  -b initjvm -c  'PDB$SEED CDB$ROOT'   -U "SYS"/"&&sysPassword" $ORACLE_HOME/javavm/install/initjvm.sql;
 
@@ -26,7 +34,7 @@ host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/
 connect "SYS"/"&&sysPassword" as SYSDBA
 spool off
 
-# context
+prompt context
 
 SET VERIFY OFF
 connect "SYS"/"&&sysPassword" as SYSDBA
@@ -42,7 +50,7 @@ host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/
 
 spool off
 
-# ordinst.sql
+prompt ordinst.sql
 
 SET VERIFY OFF
 connect "SYS"/"&&sysPassword" as SYSDBA
@@ -51,7 +59,7 @@ spool /opt/oracle/admin/free/scripts/ordinst.log append
 host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/oracle/admin/free/scripts -v  -b ordinst  -U "SYS"/"&&sysPassword" -a 1  $ORACLE_HOME/ord/admin/ordinst.sql 1SYSAUX 1SYSAUX;
 spool off
 
-# interMedia.sql
+prompt interMedia.sql
 
 SET VERIFY OFF
 connect "SYS"/"&&sysPassword" as SYSDBA
@@ -60,7 +68,7 @@ spool /opt/oracle/admin/free/scripts/interMedia.log append
 host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/oracle/admin/free/scripts -v  -b iminst -c  'PDB$SEED CDB$ROOT'   -U "SYS"/"&&sysPassword" $ORACLE_HOME/ord/im/admin/iminst.sql;
 spool off
 
-# cwmlite.sql
+prompt cwmlite.sql
 
 SET VERIFY OFF
 set echo on
@@ -69,7 +77,7 @@ connect "SYS"/"&&sysPassword" as SYSDBA
 host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/oracle/admin/free/scripts -v  -b olap -c  'PDB$SEED CDB$ROOT'   -U "SYS"/"&&sysPassword" -a 1  $ORACLE_HOME/olap/admin/olap.sql 1SYSAUX 1TEMP;
 spool off
 
-# spatial.sql
+prompt spatial.sql
 
 SET VERIFY OFF
 connect "SYS"/"&&sysPassword" as SYSDBA
@@ -78,7 +86,7 @@ spool /opt/oracle/admin/free/scripts/spatial.log append
 host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/oracle/admin/free/scripts -v  -b mdinst -c  'PDB$SEED CDB$ROOT'   -U "SYS"/"&&sysPassword" $ORACLE_HOME/md/admin/mdinst.sql;
 spool off
 
-# CreateClustDBViews.sql
+prompt CreateClustDBViews.sql
 
 
 SET VERIFY OFF
@@ -92,7 +100,7 @@ connect "SYS"/"&&sysPassword" as SYSDBA
 set echo on
 spool /opt/oracle/admin/free/scripts/postDBCreation.log append
 
-# lockAccount.sql
+prompt lockAccount.sql
 
 
 SET VERIFY OFF
@@ -145,9 +153,9 @@ END;
 /
 alter session set container=cdb$root;
 spool off
+ 
 
-# 
-# postDBCreation.sql
+prompt postDBCreation.sql
 
 SET VERIFY OFF
 spool /opt/oracle/admin/free/scripts/postDBCreation.log append
@@ -155,8 +163,8 @@ host $ORACLE_HOME/OPatch/datapatch -skip_upgrade_check -db free;
 connect "SYS"/"&&sysPassword" as SYSDBA
 set echo on
 
-# I want this manually
-# create spfile='/opt/oracle/dbs/spfilefree.ora' FROM pfile='/opt/oracle/admin/free/scripts/init.ora';
+prompt I want spfile manually, and in dflt location
+--  create spfile='/opt/oracle/dbs/spfilefree.ora' FROM pfile='/opt/oracle/admin/free/scripts/init.ora';
 
 connect "SYS"/"&&sysPassword" as SYSDBA
 host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/oracle/admin/free/scripts -v  -b utlrp  -U "SYS"/"&&sysPassword" $ORACLE_HOME/rdbms/admin/utlrp.sql;
@@ -166,6 +174,6 @@ connect "SYS"/"&&sysPassword" as SYSDBA
 startup ;
 spool off
 
-echo Done crdb3_comp
+prompt Done crdb3_comp
 
 
