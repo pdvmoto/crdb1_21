@@ -1,0 +1,46 @@
+# the minimalistic init.ora file
+
+# name is fixed for the 23c-FREE edition...
+db_name='FREE'
+
+# file-parameters, mimimum of information to where to place files.
+control_files               = '/opt/oracle/oradata/FREE/control01.ctl'
+db_create_file_dest         = '/opt/oracle/oradata/'
+db_create_online_log_dest_1 = '/opt/oracle/oradata/'
+diagnostic_dest             ='/opt/oracle'
+
+# needed
+undo_tablespace             = 'UNDOTBS1'
+
+# for PDB, we need some filename-convert ? (apparently not)
+
+# use the default! (experiment later, at own risk!)
+db_block_size		        = 8192
+
+# set these out of habit..
+audit_trail  ='db'
+compatible   ='23.0.0'
+
+# isnt this the dflt yet in 23 ? yep, it is.
+# enable_pluggable_database=true
+
+# some memory params, all goes faster if you can give space, if you have.. 
+# you can actually leave this out, dflts may also work?? needs test.
+
+open_cursors            = 300
+processes               = 300
+
+pga_aggregate_target    = 512m
+sga_target              = 1536m
+ 
+# notes at bottom..
+#
+# 1. for PDB, we need some filename-convert ? (apparently not)
+#
+# 2. enabisnt this the dflt yet in 23 ? yep, it is.
+# enable_pluggable_database=true
+
+# maybe for experiments later...
+# db_domain=''
+# db_recovery_file_dest_size=2G
+
