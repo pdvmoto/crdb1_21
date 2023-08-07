@@ -5,8 +5,11 @@ spool crdb1.log
 
 @accpws
 
--- we need th pw file..
+-- we need the pw file, in the dflt location.
 host $ORACLE_HOME/bin/orapwd file=$ORACLE_HOME/dbs/orapw$ORACLE_SID password=&&sysPassword force=y format=12
+
+-- we need at least some directory to place the data.
+host mkdir -p /opt/oracle/oradata/FREE
 
 set echo on
 
@@ -16,7 +19,6 @@ connect / as sysdba
 startup nomount ;
 
 -- minimal create stmnt 
--- use as much as possible from the ini/spfile
 
 CREATE DATABASE FREE
 EXTENT MANAGEMENT LOCAL
@@ -28,7 +30,9 @@ ENABLE PLUGGABLE DATABASE
    SYSTEM DATAFILES SIZE 125M AUTOEXTEND ON NEXT 10M MAXSIZE UNLIMITED
    SYSAUX DATAFILES SIZE 100M;
 
+-- add a few checks..
 select name, open_mode from v$database ;
-
 show pdbs 
+
+prompt Create Database Done. Please Verify.
 
