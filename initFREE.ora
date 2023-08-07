@@ -7,6 +7,8 @@ db_name='FREE'
 control_files               = '/opt/oracle/oradata/FREE/control01.ctl'
 db_create_file_dest         = '/opt/oracle/oradata/'
 db_create_online_log_dest_1 = '/opt/oracle/oradata/'
+db_create_online_log_dest_2 = '/opt/oracle/oraflra/'
+
 diagnostic_dest             ='/opt/oracle'
 
 # needed
@@ -36,9 +38,10 @@ sga_target              = 1536m
 # notes at bottom..
 #
 # 1. for PDB, we need some filename-convert ? (apparently not)
+#    but I would recommend it, just to avoid those ridiculous long names.
 #
-# 2. enabisnt this the dflt yet in 23 ? yep, it is.
-# enable_pluggable_database=true
+# 2. isnt this the dflt yet in 23 ? yep, it is.
+#    enable_pluggable_database=true
 
 # maybe for experiments later...
 # db_domain=''
