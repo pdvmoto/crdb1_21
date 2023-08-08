@@ -7,7 +7,7 @@ db_name='FREE'
 control_files               = '/opt/oracle/oradata/FREE/control01.ctl'
 db_create_file_dest         = '/opt/oracle/oradata/'
 db_create_online_log_dest_1 = '/opt/oracle/oradata/'
-db_create_online_log_dest_2 = '/opt/oracle/oraflra/'
+# db_create_online_log_dest_2 = '/opt/oracle/oraflra/'
 
 diagnostic_dest             ='/opt/oracle'
 
