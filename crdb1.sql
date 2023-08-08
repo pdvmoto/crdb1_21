@@ -11,6 +11,9 @@ host $ORACLE_HOME/bin/orapwd file=$ORACLE_HOME/dbs/orapw$ORACLE_SID password=&&s
 -- we need at least some directory to place the data.
 host mkdir -p /opt/oracle/oradata/FREE
 
+-- learned the hard way: Ensure Correct init-file.
+host cp initFREE.ora $ORACLE_HOME/dbs/init$ORACLE_SID.ora
+
 set echo on
 
 connect / as sysdba 
