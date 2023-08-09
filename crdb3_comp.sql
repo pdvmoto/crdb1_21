@@ -163,7 +163,9 @@ host $ORACLE_HOME/OPatch/datapatch -skip_upgrade_check -db free;
 connect "SYS"/"&&sysPassword" as SYSDBA
 set echo on
 
-prompt I want spfile manually, and in dflt location
+prompt I prefer to do my spfile manually, 
+prompt and at the moment in dflt location
+prompt I might  consider moving it out of OH later.
 --  create spfile='/opt/oracle/dbs/spfilefree.ora' FROM pfile='/opt/oracle/admin/free/scripts/init.ora';
 
 connect "SYS"/"&&sysPassword" as SYSDBA
