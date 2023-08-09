@@ -12,6 +12,10 @@ notes:
 @accpws
 
 
+-- need shorter commands to Run CatCon..hence define rcc
+DEFINE rcc="$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /tmp -v "
+
+
 prompt JServer
 
 SET VERIFY OFF
@@ -22,6 +26,15 @@ spool /opt/oracle/admin/free/scripts/JServer.log append
 
 -- consider script to run catcon.pl.. or ..
 -- host $OPERL $OCATCON -n 1 -l $OLOG -v -b initjvm -c 'PDB$SEED CDB$ROOT'  
+
+
+host &&rcc -b nothing1 -c 'PDB$SEED CDB$ROOT' -U "SYS"/"&&sysPassword" $ORACLE_HOME/javavm/install/nothing1.sql;
+
+host &&rcc -b foobar1  -c 'PDB$SEED CDB$ROOT' -U "SYS"/"&&sysPassword" $ORACLE_HOME/xdk/admin/foobar1.sql;
+
+host &&rcc -b test_2   -c 'PDB$SEED CDB$ROOT' -U "SYS"/"&&sysPassword" $ORACLE_HOME/xdk/admin/test_2.sql;
+
+
 
 host $ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /opt/oracle/admin/free/scripts -v  -b initjvm -c  'PDB$SEED CDB$ROOT'   -U "SYS"/"&&sysPassword" $ORACLE_HOME/javavm/install/initjvm.sql;
 
