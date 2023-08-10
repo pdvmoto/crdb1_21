@@ -12,6 +12,9 @@ notes:
 -- get passwords
 @accpws
 
+-- one main logfile for this script...
+spool crdb3_comp 
+
 -- Wanted shorter commands to Run CatCon.. Hence define rcc
 DEFINE rcc="$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -n 1 -l /tmp -v "
 
@@ -72,8 +75,6 @@ SET VERIFY OFF
 connect "SYS"/"&&sysPassword" as SYSDBA
 
 set echo on
-
-spool lockAccount.log append
 
 alter session set "_oracle_script"=true;
 alter pluggable database pdb$seed close;
