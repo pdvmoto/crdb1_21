@@ -1,0 +1,66 @@
+SQL> 
+SQL> -- let's do multiple plugs straight away.
+SQL> -- future: create 42 plugs in a pl/sql loop? would that work?
+SQL> 
+SQL> CREATE PLUGGABLE DATABASE FREEPDB1 ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword" ;
+SP2-0640: Not connected
+SQL> CREATE PLUGGABLE DATABASE FREEPDB2 ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword" ;
+SP2-0640: Not connected
+SQL> CREATE PLUGGABLE DATABASE ORCL	ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword" ;
+SP2-0640: Not connected
+SQL> 
+SQL> -- should only see 2 of the 3 new ones...
+SQL> select name from v$containers where upper(name) like 'FREEPDB%';
+SP2-0640: Not connected
+SQL> 
+SQL> alter pluggable database FREEPDB1 open;
+SP2-0640: Not connected
+SQL> alter pluggable database FREEPDB2 open;
+SP2-0640: Not connected
+SQL> alter pluggable database ORCL     open;
+SP2-0640: Not connected
+SQL> 
+SQL> show pdbs
+SP2-0640: Not connected
+SP2-0641: "SHOW PDBS" requires connection to server
+SQL> 
+SQL> alter system register;
+SP2-0640: Not connected
+SQL> 
+SQL> prompt ---- End of crdb4_pdbs. Please check, properties, files, listener etc... -----
+> 
+---- End of crdb4_pdbs. Please check, properties, files, listener etc... ---- 
+SQL> spool off
+SYS @ FREE  > 
+SYS @ FREE  > -- let's do multiple plugs straight away.
+SYS @ FREE  > -- future: create 42 plugs in a pl/sql loop? would that work?
+SYS @ FREE  > 
+SYS @ FREE  > CREATE PLUGGABLE DATABASE FREEPDB1 ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword" ;
+SP2-0640: Not connected
+SYS @ FREE  > CREATE PLUGGABLE DATABASE FREEPDB2 ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword" ;
+SP2-0640: Not connected
+SYS @ FREE  > CREATE PLUGGABLE DATABASE ORCL	 ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword" ;
+SP2-0640: Not connected
+SYS @ FREE  > 
+SYS @ FREE  > -- should only see 2 of the 3 new ones...
+SYS @ FREE  > select name from v$containers where upper(name) like 'FREEPDB%';
+SP2-0640: Not connected
+SYS @ FREE  > 
+SYS @ FREE  > alter pluggable database FREEPDB1 open;
+SP2-0640: Not connected
+SYS @ FREE  > alter pluggable database FREEPDB2 open;
+SP2-0640: Not connected
+SYS @ FREE  > alter pluggable database ORCL	open;
+SP2-0640: Not connected
+SYS @ FREE  > 
+SYS @ FREE  > show pdbs
+SP2-0640: Not connected
+SP2-0641: "SHOW PDBS" requires connection to server
+SYS @ FREE  > 
+SYS @ FREE  > alter system register;
+SP2-0640: Not connected
+SYS @ FREE  > 
+SYS @ FREE  > prompt ---- End of crdb4_pdbs. Please check, properties, files, listener etc... -----
+> 
+---- End of crdb4_pdbs. Please check, properties, files, listener etc... ---- 
+SYS @ FREE  > spool off
