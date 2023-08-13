@@ -130,7 +130,9 @@ prompt next is postDBCreation.sql
 
 SET VERIFY OFF
 
-host $ORACLE_HOME/OPatch/datapatch -skip_upgrade_check -db free;
+-- MOS note 2538591.1: datapatch needs the "bootstrap"
+-- and the SID seems case sensitive here...
+host $ORACLE_HOME/OPatch/datapatch -skip_upgrade_check -db FREE;
 
 connect "SYS"/"&&sysPassword" as SYSDBA
 
