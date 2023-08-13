@@ -9,4 +9,4 @@ define      sysPassword=oracle
 define   systemPassword=oracle
 define pdbAdminPassword=oracle
 
-echo three pwds set
+-- prompt three pwds set
