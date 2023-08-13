@@ -16,6 +16,9 @@ set echo on
 
 spool crdb4_pdb.log append
 
+-- found out this "bootstrap" was needed. MOS note: 2538591.1
+host $ORACLE_HOME/OPatch/datapatch --verbose
+ 
 -- let's do multiple plugs straight away.
 -- future: create 42 plugs in a pl/sql loop? would that work?
 
@@ -23,7 +26,7 @@ CREATE PLUGGABLE DATABASE FREEPDB1 ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdmin
 CREATE PLUGGABLE DATABASE FREEPDB2 ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword" ;
 CREATE PLUGGABLE DATABASE ORCL     ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword" ;
 
--- should only see 2 of the 3 new ones...
+-- only see 2 of the 3 new ones, wonder why ...
 select name from v$containers where upper(name) like 'FREEPDB%';
 
 alter pluggable database FREEPDB1 open;
