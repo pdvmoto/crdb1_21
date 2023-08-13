@@ -1,12 +1,14 @@
 # crdb1_21
 
-verify oracle home and version-nr
+contents: Files blogs (4-part so far) to manually create CDB+PDBs v23c
 
-run from /opt/oracle/admin/free/scripts, but aim for porability to any linux with correct softwar
-
-
-notes here... or on (draft) blog.
+todo: 
+ - move irrelevant files away or to a subdir
+ - alternative: create new git-repository with minimal files
 
 More:
- - next: try a read-only OHOME, and place all (ALL ! ) database files on an externa -v volume.
- - then re-mount that volum on Diff containers, one at a time.. The Ultimate Portability ?
+ - separate software from data..
+ - next: try a read-only OHOME, and place all (ALL ! ) database files 
+   on an externa -v volume.
+ - then re-mount that volum on Diff containers, one at a time.. 
+   The Ultimate Portability ?
