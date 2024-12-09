@@ -1,0 +1,145 @@
+
+taken from :
+https://hub.docker.com/r/gvenzl/oracle-free
+
+create more PDBs.. need oms
+
+alter system set db_create_file_dest = '/opt/oracle/oradata/' ; 
+
+alter pluggable database freepdb2 open ;
+alter pluggable database freepdb2 save state ;
+
+
+-- on way to run dbca..
+root => yum install x11 , doesnt help
+
+-- this worked, the resulihg FREE.sh is runnable.
+-- it only needs to open the PDB
+dbca -silent -generatescripts \
+ -templateName  FREE_Database.dbc \
+ -gdbname FREE -sid FREE -responseFile NO_VALUE \
+ -numberOfPDBs 1 \
+ -pdbName FREEPDB1 \
+ -pdbAdminPassword oracle \
+ -databaseType MULTIPURPOSE
+
+-- init file that worked on 1st create:
+iFREE.__data_transfer_cache_size=0
+FREE.__db_cache_size=1040187392
+FREE.__inmemory_ext_roarea=0
+FREE.__inmemory_ext_rwarea=0
+FREE.__inmemory_size=0
+FREE.__java_pool_size=0
+FREE.__large_pool_size=16777216
+FREE.__oracle_base='/opt/oracle'#ORACLE_BASE set from environment
+FREE.__pga_aggregate_target=536870912
+FREE.__sga_target=1610612736
+FREE.__shared_io_pool_size=83886080
+FREE.__shared_pool_size=436207616
+FREE.__streams_pool_size=0
+FREE.__unified_pga_pool_size=0
+*.audit_file_dest='/opt/oracle/admin/FREE/adump'
+*.audit_trail='db'
+*.compatible='23.0.0'
+
+# one ctl file is enough 
+*.control_files='/opt/oracle/oradata/FREE/control01.ctl'
+*.db_block_size=8192
+*.db_name='FREE'
+*.diagnostic_dest='/opt/oracle'
+*.dispatchers='(PROTOCOL=TCP) (SERVICE=FREEXDB)'
+*.enable_pluggable_database=true
+*.nls_language='AMERICAN'
+*.nls_territory='AMERICA'
+*.open_cursors=300
+*.pga_aggregate_target=512m
+*.processes=300
+*.remote_login_passwordfile='EXCLUSIVE'
+*.sga_target=1536m
+*.undo_tablespace='UNDOTBS1'
+
+# additions.. 
+
+
+#allow omf
+db_create_file_dest='/opt/oracle/oradata/'
+
+# enable  file name convert: later
+# PDB_FILE_NAME_CONVERT = '/opt/oracle/oradata/','/opt/oracle/oradata/seed'
+
+#
+# -- -- - 
+
+# create script on 1st:
+rem 
+rem
+rem
+
+CREATE DATABASE FREE
+EXTENT MANAGEMENT LOCAL
+DEFAULT TABLESPACE users
+DEFAULT TEMPORARY TABLESPACE temp
+UNDO TABLESPACE undotbs1
+ENABLE PLUGGABLE DATABASE
+   SEED
+   SYSTEM DATAFILES SIZE 125M AUTOEXTEND ON NEXT 10M MAXSIZE UNLIMITED
+   SYSAUX DATAFILES SIZE 100M;
+
+Rem
+rem
+rem 1st pdb, using OM and db_file_create_dest:
+create pluggable database FREEPDB1 admin user pdb1 identified by pdb1 ;
+
+
+
+
+using dbca/gui:
+on container:
+export DISPLAY=docker.for.mac.host.internal:0
+
+in mac:
+xhost +
+
+
+--- 
+using python to test, 
+
+needed to install python in container, as root:
+dnf module install python39 
+python3 -m pip install cx_Oracle --upgrade
+
+
+-- detail, you need to enable packs..
+alter system set control_management_pack_access='DIAGNOSTIC+TUNING' scope=both ; 
+
+-- -- 
+Sept 2023: new image ? 
+
+docker run  -d -p 1521:1521 -name orasept23 35e92315f1f80c23bec512ac79d0b2c3148c473c643b7544b3e864747f97775f 
+docker run  -d -p 1521:1521 -name ora23ai 7510f8869b041dbd0dc782e7432aeee37cc2fd28eb4496e3b03c4ba3c5c4218e
+docker run  -d -p 1521:1521 -name ora23_5 sha256:e1ff84cf03edd29bdc63d9a7d868168c262c95c9039778598db14e4bce15fa53
+
+
+08 Dec 2024, new images.
+docker login
+docker run -d -p 1521:1521 \
+    -e ORACLE_PASSWORD=oracle \
+    --name ora235 \
+    gvenzl/oracle-free:full
+
+microdnf install git
+microdnf install which
+microdnf install sysstat
+microdnf install procps
+
+also test:
+ - mapping -v, and keep data over upgrades ? any actions required ? 
+ - automatic creation of scott, uxutils, via scripted docker-run (see yb)
+ - switch off auditing - space
+ - microdnf install git
+ - git clone http://github.com/pdvmoto/binsql
+ - consider rls : rlwrap for sqlplus 
+ - phython3
+ - purge awr - space
+
+
