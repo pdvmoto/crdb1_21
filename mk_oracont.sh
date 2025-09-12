@@ -14,6 +14,7 @@
 
 # which one..
 # IMAGE=gvenzl/oracle-free:slim
+# IMAGE=gvenzl/oracle-free:full
   IMAGE=gvenzl/oracle-free:full
 
 LOGFILE=mk_oracont.log
@@ -29,7 +30,7 @@ echo `date` $0 : creating new container... >> $LOGFILE
 # sleep 2
 
 # define all relevant pieces (no spaces!)
-hname=ora236
+hname=ora239
 oraport=1521
 
 # optinally: define volume or mapping.
@@ -40,8 +41,10 @@ echo docker run -d               \
 --hostname $hname --name $hname  \
 -e ORACLE_PASSWORD=oracle        \
 -p${oraport}:1521                \
--v ./initdb.d:/container-entrypoint-initdb.d \
 $IMAGE                           `
+
+# if mount is needed:
+# -v ./initdb.d:/container-entrypoint-initdb.d \
 
 # to map volume, add this line just above IMAGE..
 #  -v /Users/pdvbv/oradata/$hname:/opt/oracle/oradata \

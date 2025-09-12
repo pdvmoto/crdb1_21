@@ -33,6 +33,9 @@ alter pluggable database FREEPDB1 open;
 alter pluggable database FREEPDB2 open;
 alter pluggable database ORCL     open;
 
+alter pluggable database FREEPDB1 save state ; 
+alter pluggable database ORCL     save state ; 
+
 show pdbs                
 
 alter system register;   
