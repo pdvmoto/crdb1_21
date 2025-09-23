@@ -10,7 +10,17 @@
 # later:
 # - test mapping of oradata
 #
+# todo: include this trick to run startups:
+#  - startdb only on 2nd start (not on init)
+#  - volume must be known to docker (add to resources), hence using yb_data
 #
+# docker run -d  --hostname o23t \
+#  --name o23t -p1521:1521 \
+#  -v /Users/pdvbv/yb_data/startdb:/container-entrypoint-startdb.d \
+#  -e ORACLE_PASSWORD=oracle   \
+#  gvenzl/oracle-free:23.9-full-faststart
+# also can:
+# -v /Users/pdvbv/yb_data/node2:/container-entrypoint-startdb.d \
 
 # which one..
 # IMAGE=gvenzl/oracle-free:slim
@@ -30,7 +40,7 @@ echo `date` $0 : creating new container... >> $LOGFILE
 # sleep 2
 
 # define all relevant pieces (no spaces!)
-hname=ora239
+hname=ora23t
 oraport=1521
 
 # optinally: define volume or mapping.
