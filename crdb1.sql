@@ -22,19 +22,20 @@ connect / as sysdba
 startup nomount ;
 
 -- minimal create stmnt 
--- added: bigfile, 
--- added: char-set utf8
+
+-- if needed, add  bigfile as line 3: -- SET DEFAULT BIGFILE TABLESPACE
+-- added: char-set utf8, nchar automatically becomes AL16UTF16 (check!)
+
 CREATE DATABASE FREE
 EXTENT MANAGEMENT LOCAL
-SET DEFAULT BIGFILE TABLESPACE
 DEFAULT TABLESPACE users
 DEFAULT TEMPORARY TABLESPACE temp
 UNDO TABLESPACE undotbs1
-CHARACTER SET AL32UTF8
+  CHARACTER SET AL32UTF8
 ENABLE PLUGGABLE DATABASE
    SEED
-   SYSTEM DATAFILES SIZE 50M AUTOEXTEND ON NEXT 50M MAXSIZE UNLIMITED
-   SYSAUX DATAFILES SIZE 50M;
+   SYSTEM DATAFILES SIZE 40M AUTOEXTEND ON NEXT 50M MAXSIZE UNLIMITED
+   SYSAUX DATAFILES SIZE 40M;
 
 -- show some result
 @chk_crdb1 
@@ -42,7 +43,6 @@ ENABLE PLUGGABLE DATABASE
 -- add a few checks..
 select name, open_mode from v$database ;
 show pdbs 
-
 
 prompt Create Database Done. Please Verify.
 

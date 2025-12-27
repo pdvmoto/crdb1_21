@@ -16,7 +16,6 @@ column restricted format A10
 
 set linesize 150
 
-
 select con_id, dbid, name, log_mode, open_mode from v$database ;
 
 select con_id, name pdb_name, open_mode omode, restricted, dbid , guid
@@ -26,3 +25,6 @@ select con_id, bytes / ( 1024*1024) as mb,  name fname
 from v$datafile
 order by con_id;
 
+select t.con_id, t.name, t.bigfile  
+from v$tablespace t
+order by con_id , ts# ;
