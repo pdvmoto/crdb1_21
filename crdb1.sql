@@ -22,20 +22,27 @@ connect / as sysdba
 startup nomount ;
 
 -- minimal create stmnt 
-
+-- added: bigfile, 
+-- added: char-set utf8
 CREATE DATABASE FREE
 EXTENT MANAGEMENT LOCAL
+SET DEFAULT BIGFILE TABLESPACE
 DEFAULT TABLESPACE users
 DEFAULT TEMPORARY TABLESPACE temp
 UNDO TABLESPACE undotbs1
+CHARACTER SET AL32UTF8
 ENABLE PLUGGABLE DATABASE
    SEED
-   SYSTEM DATAFILES SIZE 125M AUTOEXTEND ON NEXT 10M MAXSIZE UNLIMITED
-   SYSAUX DATAFILES SIZE 100M;
+   SYSTEM DATAFILES SIZE 50M AUTOEXTEND ON NEXT 50M MAXSIZE UNLIMITED
+   SYSAUX DATAFILES SIZE 50M;
+
+-- show some result
+@chk_crdb1 
 
 -- add a few checks..
 select name, open_mode from v$database ;
 show pdbs 
+
 
 prompt Create Database Done. Please Verify.
 

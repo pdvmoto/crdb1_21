@@ -20,8 +20,11 @@ undo_tablespace             = 'UNDOTBS1'
 db_block_size		        = 8192
 
 # set these out of habit..
-audit_trail  ='db'
-compatible   ='23.0.0'
+# audit_trail  ='db'
+# compatible   ='23.0.0'
+
+# is remote roles dflt true ? (if pwdfile is created)
+# remote_os_roles = true
 
 # isnt this the dflt yet in 23 ? yep, it is.
 # enable_pluggable_database=true
