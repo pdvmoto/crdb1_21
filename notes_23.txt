@@ -143,3 +143,26 @@ also test:
  - purge awr - space
 
 
+-- -- -- Dec 2025 -- -- -- 
+1. edited the init-file
+2. mk_cont.sh : tried several options to create + run container:
+    edit entrypoint after 1st start: tail -f /dev/null, to allow recreate of DB
+    Then run a copy of the entrypoint script
+3. or optionally: run the copy of entrypoint.s with nohup, then start tail.. 
+    that way, the DB will always start.
+
+
+-- begin, the hack of container-entrypoint -- 
+
+#!/bin/bash
+
+# this hack to allow container to stop and restart without DB
+# run a copy of the script, in nohup, it wont exit-on-error
+nohup /opt/oracle/entry2.sh 2>&1 &
+
+# now just tail.. 
+tail -f /dev/null
+
+-- end, the hack of container-entrypoint -- 
+
+
