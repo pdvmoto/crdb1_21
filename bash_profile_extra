@@ -1,7 +1,7 @@
 
 # extra commands for profile in containers
 
-SQLPATH=/opt/oracle/admin/binsql
+export SQLPATH=/opt/oracle/admin/binsql
 
 alias ll='ls -la '
 alias ltm='ls -ltra ' 

@@ -55,17 +55,16 @@ ENABLE PLUGGABLE DATABASE
 CREATE PLUGGABLE DATABASE FREEPDB1
   ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword" ;
 
--- convert filenames, specify minimal.. no ts-names
--- this seems to only work if no db_file_dest is defined
+-- convert filenames, specify minimal.. no tablespace-names
+-- this seems to only work even if db_file_dest is defined
+-- this would by my Pref!
 CREATE PLUGGABLE DATABASE
   FREEPDB2
     ADMIN USER PDBADMIN IDENTIFIED BY "&&pdbAdminPassword"
     FILE_NAME_CONVERT = ('/opt/oracle/oradata/FREE/PDBSEED/',
                          '/opt/oracle/oradata/FREE/FREEPDB2/') ;
 
-
-
--- generate error...
+-- original stmnt, generates error if DB alrady exist...
 CREATE DATABASE FREE
 EXTENT MANAGEMENT LOCAL
 DEFAULT TABLESPACE users
