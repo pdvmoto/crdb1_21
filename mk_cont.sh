@@ -44,6 +44,12 @@ docker run -d  \
 # -v /Users/pdvbv/yb_data/oradata:/opt/oracle/oradata \
 # -v /Users/pdvbv/yb_data/oradata:/opt/oracle/oradata \
 
+# full set of mappings.. all are optional, but the entry points are convenient.
+#  -v        ./map_startdb:/container-entrypoint-startdb.d \
+#  -v         ./map_initdb:/container-entrypoint-initdb.d  \
+#  -v           ./map_diag:/opt/oracle/diag  \
+#  -v /Users/pdvbv/oradata:/opt/oracle/oradata  \
+
 #  gvenzl/oracle-free:full-faststart
 #  gvenzl/oracle-free:full
 
