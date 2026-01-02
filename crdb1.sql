@@ -44,5 +44,9 @@ ENABLE PLUGGABLE DATABASE
 select name, open_mode from v$database ;
 show pdbs 
 
+prompt .
 prompt Create Database Done. Please Verify.
+prompt .
+promp Optional: use reszie_after1.sql to pre-resize datafiles
+prompt . 
 

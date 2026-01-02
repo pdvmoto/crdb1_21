@@ -5,8 +5,9 @@ host touch /tmp/initdb_start
 
 alter session set container=freepdb1 ;
 
-alter system set sql_history_enabled=true ;
-alter system set "_sql_history_buffers"=10000 ; 
+-- leftover from testing history
+-- alter system set sql_history_enabled=true ;
+-- alter system set "_sql_history_buffers"=10000 ; 
 
 create user scott identified by tiger ;
 
