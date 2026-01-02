@@ -29,7 +29,7 @@
 # IMAGE=gvenzl/oracle-free:full
   IMAGE=gvenzl/oracle-free:full
 
-CONT=o26fa
+CONT=o26tst
 
 LOGFILE=mk_oc2.log
 
@@ -37,6 +37,7 @@ LOGFILE=mk_oc2.log
 mkdir ./map_initdb
 mkdir ./map_startdb
 mkdir ./map_diag
+mkdir ~/oradata/$CONT
 
 # explicitly distribute the (config) files to the mapped bind-volumes
 #  the setenv.sh will put profile and env files in place
@@ -65,21 +66,27 @@ echo `date` $0 : creating new container... >> $LOGFILE
 
 # define all relevant pieces (no spaces!)
 hname=$CONT
-oraport=1521
+oraport=1522
 
 # optinally: define volume or mapping.
 
 # define the command
 crenode=` \
-echo docker run -d               \
---hostname $hname --name $hname  \
--e ORACLE_PASSWORD=oracle        \
--p${oraport}:1521                \
+echo docker run -d  \
+ --hostname $hname --name $hname  \
+ --mount type=bind,source=./map_initdb,target=/container-entrypoint-initdb.d \
+ --mount type=bind,source=./map_startdb,target=/container-entrypoint-startdb.d \
+ --mount type=bind,source=./map_diag,target=/opt/oracle/diag \
+ --mount type=bind,source=/Users/pdvbv/oradata/$hname,target=/opt/oracle/oradata \
+ -e ORACLE_PASSWORD=oracle  \
+ -p${oraport}:1521          \
 $IMAGE                           `
 
 # if mount is needed:
 # --mount type=bind,source=./map_initdb,target=/container-entrypoint-initdb.d \
 # --mount type=bind,source=./map_startdb,target=/container-entrypoint-startdb.d \
+# --mount type=bind,source=./map_diag,target=/opt/oracle/diag \
+# --mount type=bind,source=/Users/pdvbv/oradata/$hname:/opt/oracle/oradata \
 
 # to map volume, add this line just above IMAGE..
 #  -v /Users/pdvbv/oradata/$hname:/opt/oracle/oradata \
@@ -117,6 +124,8 @@ cat <<EOF | docker exec -i $hname sh
   echo "alias ltm='ls -lra '"                       >> .bash_profile 
   echo "alias dum='du -sm * | sort -ns '"           >> .bash_profile 
   echo "export SQLPATH=/opt/oracle/admin/binsql"    >> .bash_profile
+  chmod 755 .bash_profile
+  chmod 755 .bashrc
   cd /opt/oracle/admin
   git clone https://github.com/pdvmoto/binsql
 EOF
