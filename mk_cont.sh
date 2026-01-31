@@ -1,20 +1,38 @@
 
 # mk_cont.sh: create a container with oracle database in it..
 #
+# note: mappings and scripts slightly different when using oracle-images instead of gvenzl
+#
 # note: -v mapping required dirs to be known by docker. Dont map if volumes not know..
+#     check also: mk_oc2.sh: more elaborate commands and logging
 #
 # note: initdb and startdb contain various tricks.. if exit non-zero, container will FAIL
 #       may needd to create subdirs and put files in them
 #
 # note: when mapping oradata, database will (can) persist, but versions upgrades ??
 #
-# 
+#
+# Tips: 
+# - Simplest thing is to map nothing, accept default behaviour.
+# - when mapping oradata, the database CAN survive container-replacements.
+# - when re-creating or modifying the database: Edit the entrypoint.sh, see notes
+#
+# todo:
+# - oradata-mount or mapping: include container-name, to allow mulitple.
+# - better replacement of entrypoint-script ?  
+#
+
+
+# HOSTNAME and containername..
+
+CONT=o26fa
+
+# IMAGE to use..
 
 # SRC_IMAGE=gvenzl/oracle-free:slim
 # SRC_IMAGE=gvenzl/oracle-free:full-faststart
   SRC_IMAGE=gvenzl/oracle-free:full
 
-CONT=o26fa
 
 # create+prepare map-volumes
 mkdir ./map_initdb
@@ -23,11 +41,11 @@ mkdir ./map_diag
 
 cp exrc_4_container     ./map_initdb/.exrc
 cp bash_profile_extra   ./map_initdb/bash_profile_extra
-cp 1_setenv.sh          ./map_initdb/
-cp 1_initdb.sql         ./map_initdb/
-cp 2_initdb.sql         ./map_initdb/
+# cp 1_setenv.sh          ./map_initdb/
+# cp 1_initdb.sql         ./map_initdb/
+# cp 2_initdb.sql         ./map_initdb/
 
-cp 1_startdb.sql        ./map_startdb/
+# cp 1_startdb.sql        ./map_startdb/
 
 docker run -d  \
   --hostname $CONT \
