@@ -3,11 +3,14 @@
 
 export SQLPATH=/opt/oracle/admin/binsql
 
+export PS1='\h:${ORACLE_SID}:\W > '
+
 alias ll='ls -la '
 alias ltm='ls -ltra ' 
 alias psg='ps -ef | grep $1 ' 
 
 alias oh='cd $ORACLE_HOME '
 alias sq=' sqlplus / as sysdba '
+alias rls=' rlwrap sqlplus /nolog ' 
 
 
