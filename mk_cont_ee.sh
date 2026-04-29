@@ -36,7 +36,7 @@
 
 # define HOSTNAME and containername..
 
-CONT=o26slim
+CONT=o26ee
 
 # define the program used for yum / dnf / microdnf (gvenzl)
 # gvenzl: microdnf
@@ -70,13 +70,11 @@ cp bash_profile_extra   ./map_initdb/bash_profile_extra
 docker run -d  \
   --hostname $CONT \
   --name     $CONT \
-  -p1522:1521 \
-  -v        ./map_startdb:/container-entrypoint-startdb.d \
-  -v         ./map_initdb:/container-entrypoint-initdb.d  \
+  -p1521:1521 \
   -v           ./map_diag:/opt/oracle/diag  \
   -v /Users/pdvbv/oradata/$CONT:/opt/oracle/oradata  \
   -e ORACLE_PASSWORD=oracle   \
-  $SRC_IMAGE 
+  $SRC_IMAGE
 
 # also can:
 # -v /Users/pdvbv/yb_data/node2:/container-entrypoint-startdb.d \
@@ -96,6 +94,8 @@ docker run -d  \
 #
 # further config..
 #
+docker exec -u root $CONT bash -c ' echo "" > /etc/yum/vars/ociregion '  
+
 docker exec -u root $CONT $YUM install sysstat
 docker exec -u root $CONT $YUM install which
 docker exec -u root $CONT $YUM install file
@@ -106,6 +106,8 @@ echo "dont forget git-clone... "
 docker exec  $CONT  git clone https://github.com/pdvmoto/binsql   /opt/oracle/admin/binsql
 docker exec  $CONT  git clone https://github.com/pdvmoto/crdb1_21 /opt/oracle/admin/crdb1_21
 docker exec  $CONT  rm                                            /opt/oracle/admin/crdb1_21/*.png
+
+docker exec  $CONT  git clone https://github.com/pdvmoto/crdb26   /opt/oracle/admin/crdb26
 
 echo .
 docker ps 
