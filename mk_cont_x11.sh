@@ -27,15 +27,17 @@ echo .
 echo .
 read -t 15 -p "container running... chck" abc
 
-exit
+# exit   # (when dubugging)
 
 #
-# first run yum or dnf we need to zip the ociregion
-# 
-docker exec -u root $CONT mv /etc/yum/vars/ociregion /etc/vars/yum/bck_ociregion
+# to run yum or dnf we need to zip ociregion (we back it up just in case)
+#
+docker exec -u root $CONT bash -c '        mv /etc/yum/vars/ociregion  /etc/yum/vars/bck_ociregion ' 
 docker exec -u root $CONT bash -c ' echo "" > /etc/yum/vars/ociregion ' 
 
-# now get X11
+# now get X11, google told me we need two things..
+# and note that the (first) yum-command(s) can be a bit slow.
+
 docker exec -u root $CONT $YUM config-manager --enable ol8_codeready_builder
 docker exec -u root $CONT $YUM install xorg-x11-apps
 
@@ -43,7 +45,7 @@ docker exec -u root $CONT $YUM install xorg-x11-apps
 docker exec $CONT xeyes -display host.docker.internal:0 -outline violet & 
 
 echo .
-read -t 10 -p "Did X11 install OK?" abc
+read -t 10 -p "Did X11 install OK, violet?" abc
  
 #
 # further config, some personal preferences ..
@@ -54,6 +56,7 @@ docker exec -u root $CONT $YUM install file
 docker exec -u root $CONT $YUM install procps
 docker exec -u root $CONT $YUM install git
 
+# rlwrap needed epel...
 docker exec -u root $CONT $YUM install oracle-epel-release-el8
 docker exec -u root $CONT $YUM install rlwrap
 
