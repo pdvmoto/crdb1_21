@@ -1,6 +1,9 @@
 
 # mk_cont_x1.sh: create and run a container from oracle image, and get X11 installed
 #
+# note: 
+#   you may have to configure XQuartz: allow external connections, and Restart
+# 
 # todo:
 # - consider X11, test, keep script/notes 
 # - define the program used for yum / dnf / microdnf (gvenzl)

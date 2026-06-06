@@ -18,6 +18,8 @@
 # 
 # note: script works best with gvenzl-free, need testing for "enterprise" 
 #
+# note: time, fix cp /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
+#
 #
 # Tips: 
 # - Simplest thing is to map nothing, accept default behaviour.
@@ -36,7 +38,7 @@
 
 # define HOSTNAME and containername..
 
-CONT=o26ee
+CONT=o26e1
 
 # define the program used for yum / dnf / microdnf (gvenzl)
 # gvenzl: microdnf
@@ -71,8 +73,6 @@ docker run -d  \
   --hostname $CONT \
   --name     $CONT \
   -p1521:1521 \
-  -v           ./map_diag:/opt/oracle/diag  \
-  -v /Users/pdvbv/oradata/$CONT:/opt/oracle/oradata  \
   -e ORACLE_PASSWORD=oracle   \
   $SRC_IMAGE
 
@@ -96,11 +96,19 @@ docker run -d  \
 #
 docker exec -u root $CONT bash -c ' echo "" > /etc/yum/vars/ociregion '  
 
+docker exec -u root $CONT $YUM config-manager --enable ol8_codeready_builder
+docker exec -u root $CONT $YUM install xorg-x11-apps
+
+# will know if ...
+docker exec $CONT xeyes -display host.docker.internal:0 -outline violet &
+
 docker exec -u root $CONT $YUM install sysstat
 docker exec -u root $CONT $YUM install which
 docker exec -u root $CONT $YUM install file
 docker exec -u root $CONT $YUM install procps
 docker exec -u root $CONT $YUM install git
+
+docker exec -u root $CONT cp /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
 
 echo "dont forget git-clone... " 
 docker exec  $CONT  git clone https://github.com/pdvmoto/binsql   /opt/oracle/admin/binsql

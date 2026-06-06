@@ -46,21 +46,22 @@
 
 # ### define HOSTNAME and containername.. and port (dflt 1521) ###
 
-CONT=o26e5
-PORT=1525 
+CONT=o262f1
+PORT=1521 
 
 # ### define the program used for yum / dnf / microdnf (gvenzl) ###
 # gvenzl: microdnf
 # enterprise: yum or dnf
 
-YUM=yum 
+YUM=microdnf 
 
 # IMAGE to use..
 
 # SRC_IMAGE=gvenzl/oracle-free:slim
 # SRC_IMAGE=gvenzl/oracle-free:full-faststart
 # SRC_IMAGE=gvenzl/oracle-free:full
-SRC_IMAGE=container-registry.oracle.com/database/enterprise
+SRC_IMAGE=gvenzl/oracle-free:23.26.2-full 
+# SRC_IMAGE=container-registry.oracle.com/database/enterprise
 
 
 # create+prepare map-volumes
@@ -84,8 +85,6 @@ docker run -d      \
   --name     $CONT \
   -p${PORT}:1521      \
   -e ORACLE_PASSWORD=oracle    \
-  -v /Users/pdvbv/oradata/$CONT:/opt/oracle/oradata  \
-  -v /Users/pdvbv/oradiag/$CONT:/opt/oracle/diag     \
   $SRC_IMAGE
 
 # also can:
@@ -123,9 +122,10 @@ echo .
 echo Next to set timezone and install some components..
 echo .
 
-docker exec -u root $CONT bash -c ' timedatectl set-timezone Europe/London ' 
-docker exec -u root $CONT bash -c ' ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime '
-docker exec -u root $CONT bash -c ' echo Europe/London >/etc/timezone ' 
+
+# docker exec -u root $CONT bash -c ' timedatectl set-timezone Europe/Amsterdam ' 
+  docker exec -u root $CONT bash -c ' cp /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime '
+# docker exec -u root $CONT bash -c ' echo Europe/London >/etc/Amsterdam ' 
 
 docker exec -u root $CONT bash -c '        mv /etc/yum/vars/ociregion  /etc/yum/vars/bck_ociregion '
 docker exec -u root $CONT bash -c ' echo "" > /etc/yum/vars/ociregion '
@@ -151,8 +151,8 @@ docker exec                   $CONT bash -c 'cat /tmp/bash_profile_extra >> ~/.b
 
 echo "dont forget git-clone... " 
 docker exec  $CONT  git clone https://github.com/pdvmoto/binsql   /opt/oracle/admin/binsql
-docker exec  $CONT  git clone https://github.com/pdvmoto/crdb1_21 /opt/oracle/admin/crdb1_21
-docker exec  $CONT  rm                                            /opt/oracle/admin/crdb1_21/*.png
+# docker exec  $CONT  git clone https://github.com/pdvmoto/crdb1_21 /opt/oracle/admin/crdb1_21
+# docker exec  $CONT  rm                                            /opt/oracle/admin/crdb1_21/*.png
 docker exec  $CONT  git clone https://github.com/pdvmoto/crdb26   /opt/oracle/admin/crdb26
 
 echo .

@@ -10,7 +10,15 @@ alias ltm='ls -ltra '
 alias psg='ps -ef | grep $1 ' 
 
 alias oh='cd $ORACLE_HOME '
-alias sq=' sqlplus / as sysdba '
+alias  sq=' rlwrap sqlplus / as sysdba '
 alias rls=' rlwrap sqlplus /nolog ' 
+
+alias C002=' export ORACLE_SID=C002 '
+alias C003=' export ORACLE_SID=C003 '
+
+alias C005=' export ORACLE_SID=C005 '
+alias FREE=' export ORACLE_SID=FREE '
+
+alias alert='find /opt/oracle/diag/rdbms/*/${ORACLE_SID}/trace -name "alert*.log"|xargs tail -f'
 
 
